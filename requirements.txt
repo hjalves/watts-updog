@@ -16,6 +16,8 @@ django-timescaledb==0.2.13
     # via -r requirements.in
 packaging==23.1
     # via build
+paho-mqtt==1.6.1
+    # via -r requirements.in
 pip-tools==6.13.0
     # via -r requirements.in
 psycopg2==2.9.6
