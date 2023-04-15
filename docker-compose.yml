@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  database:
+    restart: always
+    image: timescale/timescaledb:2.10.1-pg15
+    volumes:
+      - database:/var/lib/postgresql/data
+      - ./backups:/backups
+    environment:
+      POSTGRES_USER: watts-updog
+      POSTGRES_PASSWORD: watts-updog
+    ports:
+      - "5433:5432"
+
+volumes:
+  database:

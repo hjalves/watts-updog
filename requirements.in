@@ -1,0 +1,4 @@
+Django~=4.2
+django-timescaledb>=0.2.13
+psycopg2>=2.9.6
+pip-tools>=6.13.0
