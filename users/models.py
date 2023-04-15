@@ -20,6 +20,10 @@ class Home(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def full_mqtt_topic(self):
+        return self.mqtt_topic
+
     def owners(self):
         return self.householdmembership_set.filter(
             relationship=HouseholdMembership.RELATIONSHIP_OWNER

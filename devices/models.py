@@ -31,3 +31,18 @@ class Device(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def full_mqtt_topic(self):
+        return f"{self.home.full_mqtt_topic}/{self.mqtt_topic}"
+
+
+    def create_metrics(self):
+        from metrics.decls import emi_metrics
+
+        for metric_decl in emi_metrics:
+            self.metric_set.create(
+                type=metric_decl.type,
+                data_type=metric_decl.data_type,
+                mqtt_topic=metric_decl.mqtt_topic,
+            )

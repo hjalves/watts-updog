@@ -16,6 +16,7 @@ class Metric(models.Model):
     METRIC_VOLTAGE = "voltage"
     METRIC_FREQUENCY = "frequency"
     METRIC_CURRENT = "current"
+
     METRIC_TYPE_CHOICES = (
         (METRIC_POWER, "Power (W)"),
         (METRIC_ENERGY_TOTAL, "Energy total (kWh)"),
@@ -23,6 +24,9 @@ class Metric(models.Model):
         (METRIC_ENERGY_PONTA, "Energy ponta (kWh)"),
         (METRIC_ENERGY_VAZIO, "Energy vazio (kWh)"),
         (METRIC_TARIFF, "Active tariff"),
+        (METRIC_VOLTAGE, "Voltage (V)"),
+        (METRIC_FREQUENCY, "Frequency (Hz)"),
+        (METRIC_CURRENT, "Frequency (A)"),
     )
 
     DATA_TYPE_FLOAT = "float"
@@ -35,7 +39,8 @@ class Metric(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
     type = models.CharField(choices=METRIC_TYPE_CHOICES, max_length=10)
     data_type = models.CharField(choices=DATA_TYPE_CHOICES, default=DATA_TYPE_FLOAT, max_length=6)
-    mqtt_topic = models.CharField(max_length=50)
+    mqtt_topic = models.CharField("MQTT topic", max_length=50)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "metric"
@@ -43,6 +48,10 @@ class Metric(models.Model):
 
     def __str__(self):
         return self.get_type_display()
+
+    @property
+    def full_mqtt_topic(self):
+        return f"{self.device.full_mqtt_topic}/{self.mqtt_topic}"
 
 
 class FloatMeasurement(TimescaleModel):
