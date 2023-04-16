@@ -112,12 +112,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Lisbon"
 
 USE_I18N = True
 
 USE_TZ = True
 
+FORMAT_MODULE_PATH = ["watts_updog.formats"]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -137,7 +138,7 @@ AUTH_USER_MODEL = "users.User"
 
 MQTT_HOST = getenv("MQTT_HOST", "localhost")
 MQTT_PORT = int(getenv("MQTT_PORT", 1883))
-MQTT_TOPICS = getenv("MQTT_TOPICS", "#").split(',')
+MQTT_TOPICS = getenv("MQTT_TOPICS", "#").split(",")
 
 # Logging
 

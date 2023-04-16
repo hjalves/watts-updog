@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from django.utils.formats import localize
 
 from timescale.db.models.models import TimescaleModel
 
@@ -76,6 +77,9 @@ class FloatMeasurement(TimescaleModel):
         verbose_name = "measurement (float)"
         verbose_name_plural = "measurements (float)"
 
+    def __str__(self):
+        return f"{localize(self.time)} -- {self.value}"
+
 
 class StringMeasurement(TimescaleModel):
     metric = models.ForeignKey(Metric, on_delete=models.CASCADE)
@@ -84,3 +88,6 @@ class StringMeasurement(TimescaleModel):
     class Meta:
         verbose_name = "measurement (string)"
         verbose_name_plural = "measurements (string)"
+
+    def __str__(self):
+        return f"{localize(self.time)} -- {self.value}"

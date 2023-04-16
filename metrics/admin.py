@@ -16,9 +16,13 @@ class MetricAdmin(admin.ModelAdmin):
 
 @admin.register(FloatMeasurement)
 class FloatMeasurementAdmin(admin.ModelAdmin):
-    list_display = ("time", "metric", "value")
+    list_display = ("time", "value", "metric")
+    list_filter = ('metric__type', )
+    date_hierarchy = "time"
 
 
 @admin.register(StringMeasurement)
 class StringMeasurementAdmin(admin.ModelAdmin):
-    list_display = ("time", "metric", "value")
+    list_display = ("time", "value", "metric")
+    list_filter = ('metric__type', )
+    date_hierarchy = "time"
