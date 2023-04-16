@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 from timescale.db.models.models import TimescaleModel
 
@@ -38,7 +39,9 @@ class Metric(models.Model):
 
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
     type = models.CharField(choices=METRIC_TYPE_CHOICES, max_length=10)
-    data_type = models.CharField(choices=DATA_TYPE_CHOICES, default=DATA_TYPE_FLOAT, max_length=6)
+    data_type = models.CharField(
+        choices=DATA_TYPE_CHOICES, default=DATA_TYPE_FLOAT, max_length=6
+    )
     mqtt_topic = models.CharField("MQTT topic", max_length=50)
     created_on = models.DateTimeField(auto_now_add=True)
 
@@ -52,6 +55,17 @@ class Metric(models.Model):
     @property
     def full_mqtt_topic(self):
         return f"{self.device.full_mqtt_topic}/{self.mqtt_topic}"
+
+    def create_measurement(self, value, time=None):
+        if time is None:
+            time = timezone.now()
+        match self.data_type:
+            case self.DATA_TYPE_FLOAT:
+                value = float(value)
+                FloatMeasurement.objects.create(time=time, metric=self, value=value)
+            case self.DATA_TYPE_STRING:
+                value = str(value)
+                StringMeasurement.objects.create(time=time, metric=self, value=value)
 
 
 class FloatMeasurement(TimescaleModel):

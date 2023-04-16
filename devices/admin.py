@@ -11,7 +11,7 @@ class DeviceTypeAdmin(admin.ModelAdmin):
 @admin.register(Device)
 class DeviceAdmin(admin.ModelAdmin):
     list_display = ("name", "type", "home", "mqtt_topic")
-    readonly_fields = ("full_mqtt_topic", )
+    readonly_fields = ("full_mqtt_topic",)
 
     def full_mqtt_topic(self, obj):
         return obj.full_mqtt_topic

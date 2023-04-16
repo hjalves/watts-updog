@@ -131,4 +131,69 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
+
+# MQTT broker
+
+MQTT_HOST = getenv("MQTT_HOST", "localhost")
+MQTT_PORT = int(getenv("MQTT_PORT", 1883))
+MQTT_TOPICS = getenv("MQTT_TOPICS", "#").split(',')
+
+# Logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "colored",
+            "stream": "ext://sys.stdout",
+        },
+    },
+    "formatters": {
+        "verbose": {"format": "[%(asctime)s] [%(levelname)s] %(module)s: %(message)s"},
+        "simple": {"format": "%(levelname)s %(message)s"},
+        "colored": {
+            "()": "colorlog.ColoredFormatter",
+            "format": "%(asctime)s.%(msecs)03d "
+            "%(log_color)s[%(levelname)4.4s]%(reset)s "
+            "(%(process)s.%(threadName)s) "
+            "%(name_log_color)s%(name)s%(reset)s: "
+            "%(message)s",
+            "datefmt": "%H:%M:%S",
+            "log_colors": {
+                "DEBUG": "bold_cyan",
+                "INFO": "bold_green",
+                "WARNING": "bold_yellow",
+                "ERROR": "bold_red",
+                "CRITICAL": "bold_purple",
+            },
+            "secondary_log_colors": {
+                "name": {
+                    "DEBUG": "bold_white",
+                    "INFO": "bold_white",
+                    "WARNING": "bold_yellow",
+                    "ERROR": "bold_red",
+                    "CRITICAL": "bold_purple",
+                }
+            },
+        },
+    },
+    "root": {"level": "INFO", "handlers": ["console"]},
+    "loggers": {
+        "asyncio": {"level": "INFO"},
+        "daphne": {"level": "INFO"},
+        "django": {"level": "INFO"},
+        "django.channels": {"level": "DEBUG"},
+        "django.db": {"level": "INFO"},
+        "urllib3": {"level": "DEBUG"},
+        "requests": {"level": "DEBUG"},
+        "paramiko": {"level": "DEBUG"},
+        "watts_updog": {"level": "DEBUG"},
+        "devices": {"level": "DEBUG"},
+        "metrics": {"level": "DEBUG"},
+        "users": {"level": "DEBUG"},
+    },
+}

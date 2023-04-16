@@ -10,7 +10,7 @@ class User(AbstractUser):
 
 class Home(models.Model):
     name = models.CharField()
-    mqtt_topic = models.CharField("MQTT topic", max_length=50)
+    mqtt_topic = models.CharField("MQTT topic", max_length=50, unique=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:

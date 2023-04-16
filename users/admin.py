@@ -17,4 +17,4 @@ class HomeAdmin(admin.ModelAdmin):
     list_display = ("name", "mqtt_topic", "owners")
 
     def owners(self, obj):
-        return ', '.join(str(x.user) for x in obj.owners())
+        return ", ".join(str(x.user) for x in obj.owners())
